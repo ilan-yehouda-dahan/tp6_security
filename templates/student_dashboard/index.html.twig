@@ -1,0 +1,93 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Espace Étudiant{% endblock %}
+
+{% block body %}
+    <div class="container mt-4">
+        <h1 class="mb-3">
+            Bonjour {{ app.user.firstName }} {{ app.user.lastName }} 👋
+        </h1>
+        <p class="text-muted">
+            Voici un aperçu de vos candidatures et des offres disponibles.
+        </p>
+
+        <div class="row">
+            {# Bloc Mes Candidatures #}
+            <div class="col-lg-7 mb-4">
+                <div class="card">
+                    <div class="card-header bg-info text-white">
+                        Mes Candidatures
+                    </div>
+                    <div class="card-body p-0">
+                        <table class="table mb-0">
+                            <thead>
+                            <tr>
+                                <th>Poste</th>
+                                <th>Entreprise</th>
+                                <th>Date</th>
+                                <th>Statut</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            {% for c in candidatures %}
+                                <tr>
+                                    <td>{{ c.stage_title }}</td>
+                                    <td>{{ c.company }}</td>
+                                    <td>{{ c.applied_date }}</td>
+                                    <td>
+                                        {% if c.status == 'En attente' %}
+                                            <span class="badge bg-warning text-dark">En attente</span>
+                                        {% elseif c.status == 'Acceptée' %}
+                                            <span class="badge bg-success">Acceptée</span>
+                                        {% elseif c.status == 'Refusée' %}
+                                            <span class="badge bg-danger">Refusée</span>
+                                        {% else %}
+                                            <span class="badge bg-secondary">{{ c.status }}</span>
+                                        {% endif %}
+                                    </td>
+                                </tr>
+                            {% else %}
+                                <tr>
+                                    <td colspan="4" class="text-center text-muted">Aucune candidature pour le moment.</td>
+                                </tr>
+                            {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+            {# Bloc Offres Disponibles #}
+            <div class="col-lg-5 mb-4">
+                <div class="card">
+                    <div class="card-header bg-primary text-white">
+                        Offres disponibles
+                    </div>
+                    <div class="card-body">
+                        <div class="row g-3">
+                            {% for stage in stages %}
+                                <div class="col-12">
+                                    <div class="card h-100">
+                                        <div class="card-body">
+                                            <h5 class="card-title">{{ stage.title }}</h5>
+                                            <h6 class="card-subtitle mb-2 text-muted">
+                                                {{ stage.company }} - {{ stage.location }}
+                                            </h6>
+                                            <p class="card-text">
+                                                Durée : <strong>{{ stage.duration }}</strong>
+                                            </p>
+                                            <button class="btn btn-sm btn-primary">Postuler</button>
+                                            <button class="btn btn-sm btn-outline-secondary">Détails</button>
+                                        </div>
+                                    </div>
+                                </div>
+                            {% else %}
+                                <p class="text-muted">Aucune offre disponible pour le moment.</p>
+                            {% endfor %}
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}

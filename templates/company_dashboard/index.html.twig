@@ -1,0 +1,141 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Espace Entreprise{% endblock %}
+
+{% block body %}
+    <div class="container mt-4">
+        <h1 class="mb-3">Espace Entreprise</h1>
+        <p class="text-muted">
+            Connecté en tant que <strong>{{ app.user.email }}</strong>
+        </p>
+
+        {# Statistiques #}
+        <div class="row mb-4">
+            <div class="col-md-4">
+                <div class="card border-primary">
+                    <div class="card-body">
+                        <h5 class="card-title text-primary">Offres actives</h5>
+                        <p class="display-6 mb-0">{{ nbOffresActives }}</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4 mt-3 mt-md-0">
+                <div class="card border-success">
+                    <div class="card-body">
+                        <h5 class="card-title text-success">Candidatures reçues</h5>
+                        <p class="display-6 mb-0">{{ nbCandidatures }}</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4 mt-3 mt-md-0">
+                <div class="card border-warning">
+                    <div class="card-body">
+                        <h5 class="card-title text-warning">À traiter</h5>
+                        <p class="display-6 mb-0">{{ nbCandidaturesATraiter }}</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="row">
+            {# Bloc Mes Offres #}
+            <div class="col-lg-7 mb-4">
+                <div class="card">
+                    <div class="card-header bg-primary text-white">
+                        Mes Offres
+                    </div>
+                    <div class="card-body p-0">
+                        <table class="table mb-0">
+                            <thead>
+                            <tr>
+                                <th>Titre</th>
+                                <th>Date publication</th>
+                                <th>Candidatures</th>
+                                <th>Statut</th>
+                                <th>Actions</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            {% for offre in offres %}
+                                <tr>
+                                    <td>{{ offre.title }}</td>
+                                    <td>{{ offre.published_date }}</td>
+                                    <td>{{ offre.candidates_count }}</td>
+                                    <td>
+                                        {% if offre.status == 'active' %}
+                                            <span class="badge bg-success">Active</span>
+                                        {% elseif offre.status == 'paused' %}
+                                            <span class="badge bg-warning text-dark">En pause</span>
+                                        {% else %}
+                                            <span class="badge bg-secondary">Clôturée</span>
+                                        {% endif %}
+                                    </td>
+                                    <td>
+                                        <button class="btn btn-sm btn-outline-primary">Voir</button>
+                                        <button class="btn btn-sm btn-outline-secondary">Modifier</button>
+                                    </td>
+                                </tr>
+                            {% else %}
+                                <tr>
+                                    <td colspan="5" class="text-center text-muted">Aucune offre pour le moment.</td>
+                                </tr>
+                            {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+            {# Bloc Candidatures Récentes #}
+            <div class="col-lg-5 mb-4">
+                <div class="card">
+                    <div class="card-header bg-info text-white">
+                        Candidatures récentes
+                    </div>
+                    <div class="card-body p-0">
+                        <table class="table mb-0">
+                            <thead>
+                            <tr>
+                                <th>Candidat</th>
+                                <th>Offre</th>
+                                <th>Date</th>
+                                <th>Statut</th>
+                                <th>Actions</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            {% for c in candidatures %}
+                                <tr>
+                                    <td>{{ c.student_name }}</td>
+                                    <td>{{ c.stage_title }}</td>
+                                    <td>{{ c.applied_date }}</td>
+                                    <td>
+                                        {% if c.status == 'new' %}
+                                            <span class="badge bg-primary">Nouvelle</span>
+                                        {% elseif c.status == 'in_review' %}
+                                            <span class="badge bg-warning text-dark">En cours</span>
+                                        {% elseif c.status == 'accepted' %}
+                                            <span class="badge bg-success">Acceptée</span>
+                                        {% else %}
+                                            <span class="badge bg-secondary">Autre</span>
+                                        {% endif %}
+                                    </td>
+                                    <td>
+                                        <button class="btn btn-sm btn-outline-primary">Voir</button>
+                                        <button class="btn btn-sm btn-outline-success">Accepter</button>
+                                        <button class="btn btn-sm btn-outline-danger">Refuser</button>
+                                    </td>
+                                </tr>
+                            {% else %}
+                                <tr>
+                                    <td colspan="5" class="text-center text-muted">Aucune candidature récente.</td>
+                                </tr>
+                            {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}

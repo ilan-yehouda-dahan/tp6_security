@@ -34,7 +34,6 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
      * @var string The hashed password
      */
     #[ORM\Column]
-    #[Assert\NotBlank(message: 'Le mot de passe est obligatoire')]
     private ?string $password = null;
 
     #[ORM\Column(length: 50)]
@@ -64,6 +63,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         message: 'Le type doit être "student" ou "company"'
     )]
     private ?string $userType = null;
+
 
     #[ORM\Column]
     private ?bool $isVerified = null;

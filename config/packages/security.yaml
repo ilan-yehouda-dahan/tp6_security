@@ -23,13 +23,13 @@ security:
                 login_path: app_login
                 check_path: app_login
                 enable_csrf: true
-                default_target_path: /  # Redirection par défaut
+                default_target_path: /
                 always_use_default_target_path: false  # Permet les redirections personnalisées
                 use_referer: true  # Retourne à la page précédente si possible
 
             logout:
                 path: app_logout
-                target: /  # Redirection après déconnexion
+                target: /login  # Redirection après déconnexion
 
                 # where to redirect after logout
                 # target: app_any_route
